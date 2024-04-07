@@ -42,7 +42,38 @@ async function main() {
             }))
         }
     });
-    console.log(stocks[0].values)
+    // console.log(stocks[0].values)
+
+        // High Chart
+new Chart(highestPriceChartCanvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: stocks.map(stock => stock.meta.symbol),
+                datasets: [{ 
+                    label: 'Highest',
+                    backgroundColor: stocks.map(stock => (
+                        getColor(stock.meta.symbol)
+                    )),
+                    borderColor: stocks.map(stock => (
+                        getColor(stock.meta.symbol)
+                    )),
+                    data: stocks.map(stock => (
+                        findHighest(stock.values)
+                    ))
+                }]
+            }
+        });
+function findHighest(values) {
+    let highest = 0;
+    values.forEach(value => {
+        if (parseFloat(value.high) > highest) {
+            highest = value.high
+        }
+    })
+    return highest
 }
+}
+
+
 
 main()
