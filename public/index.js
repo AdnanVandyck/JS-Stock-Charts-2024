@@ -45,7 +45,7 @@ async function main() {
     // console.log(stocks[0].values)
 
         // High Chart
-new Chart(highestPriceChartCanvas.getContext('2d'), {
+        new Chart(highestPriceChartCanvas.getContext('2d'), {
             type: 'bar',
             data: {
                 labels: stocks.map(stock => stock.meta.symbol),
@@ -63,6 +63,27 @@ new Chart(highestPriceChartCanvas.getContext('2d'), {
                 }]
             }
         });
+
+        // Average Chart
+        new Chart(averagePriceChartCanvas.getContext('2d'), {
+    type: 'pie',
+    data: {
+        labels: stocks.map(stock => stock.meta.symbol),
+        datasets: [{ 
+            label: 'Average',
+            backgroundColor: stocks.map(stock => (
+                getColor(stock.meta.symbol)
+            )),
+            borderColor: stocks.map(stock => (
+                getColor(stock.meta.symbol)
+            )),
+            data: stocks.map(stock => (
+                calculateAverage(stock.values)
+            ))
+        }]
+    }
+});
+
 function findHighest(values) {
     let highest = 0;
     values.forEach(value => {
@@ -72,8 +93,14 @@ function findHighest(values) {
     })
     return highest
 }
+
+function calculateAverage(values) {
+    let total = 0;
+    values.forEach(value => {
+    total += parseFloat(value.high)
+    })
+    return total/values.length
 }
 
-
-
+}
 main()
